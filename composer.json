@@ -1,5 +1,5 @@
 {
-    "name": "hydra/log",
+    "name": "hydrakit/log",
     "description": "Logging library for Hydra PHP framework",
     "type": "library",
     "license": "MIT",
