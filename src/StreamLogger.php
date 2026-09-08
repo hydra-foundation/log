@@ -9,29 +9,16 @@ use Stringable;
 use Throwable;
 
 /**
+ * Stream logger
+ *
  * A minimal PSR-3 logger that writes one plain-text line per record to a
- * writable stream.
- *
- * Sink selection (a file, php://stderr, …) is the caller's concern: this class
- * is handed an already-open stream and only formats and writes. A failure to
- * write is swallowed — a broken logging sink must never escalate into an
- * application failure.
- *
- * Extending {@see AbstractLogger} gives us the eight level shortcuts
- * (error(), info(), …); we implement only log().
+ * writable stream
  */
 final class StreamLogger extends AbstractLogger
 {
-    /** @param resource $stream An open, writable stream. */
     public function __construct(private $stream)
-    {
-    }
+    {}
 
-    /**
-     * @param mixed             $level
-     * @param string|Stringable $message
-     * @param array<mixed>      $context
-     */
     public function log($level, string|Stringable $message, array $context = []): void
     {
         $line = sprintf(
@@ -48,13 +35,7 @@ final class StreamLogger extends AbstractLogger
     }
 
     /**
-     * Replace {placeholders} with their context values per PSR-3.
-     *
-     * Only scalars and Stringables are substituted, and substitution is keyed
-     * on the actual value type — not truthiness — so 0, '' and false render
-     * rather than vanish. Placeholders without a usable value are left intact.
-     *
-     * @param array<mixed> $context
+     * Replace {placeholders} with their context values per PSR-3
      */
     private function interpolate(string $message, array $context): string
     {
@@ -78,11 +59,7 @@ final class StreamLogger extends AbstractLogger
     }
 
     /**
-     * Render leftover context as a trailing fragment. A Throwable under the
-     * conventional 'exception' key is rendered as a readable trace; everything
-     * else is JSON-encoded.
-     *
-     * @param array<mixed> $context
+     * Render leftover context as a trailing fragment
      */
     private function renderContext(array $context): string
     {
